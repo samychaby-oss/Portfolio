@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Samy Chabour | Data Analyst</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <style>
+      :root {
+        --primary: #0052ff;
+        --bg: #ffffff;
+        --text: #000000;
+        --accent: #f0f4ff;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        position: relative;
+      }
+      #particles-js {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background-color: white;
+      }
+      .main-content {
+        position: relative;
+        z-index: 10;
+        pointer-events: none;
+      }
+      nav,
+      section,
+      footer,
+      button,
+      a,
+      .skill-card,
+      .project-img {
+        pointer-events: auto;
+      }
+
+      nav {
+        padding: 1.5rem 8%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #eee;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      section {
+        padding: 80px 8%;
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(100px);
+      }
+      .hero {
+        min-height: 50vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        font-weight: 800;
+      }
+
+      .about-row {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 5%;
+        align-items: center;
+      }
+      .about-photo {
+        width: 100%;
+        aspect-ratio: 1/1;
+        background: #eee;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ddd;
+        overflow: hidden;
+      }
+      .about-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+      }
+
+      .skills-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+      .skill-card {
+        padding: 25px;
+        border: 1px solid #eee;
+        border-radius: 15px;
+        text-align: center;
+        background: white;
+        transition: 0.4s;
+      }
+      .skill-card img {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 15px;
+        object-fit: contain;
+      }
+      .skill-card span {
+        font-weight: 700;
+        font-size: 0.85rem;
+        display: block;
+      }
+
+      .project-row {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 5%;
+        align-items: center;
+        margin-bottom: 100px;
+      }
+      .project-img {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        cursor: pointer;
+      }
+      .project-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.3s;
+      }
+      .project-img:hover img {
+        opacity: 0.6;
+      }
+      .project-img::after {
+        content: "VOIR LES DÉTAILS";
+        color: white;
+        position: absolute;
+        font-weight: 800;
+        border: 2px solid white;
+        padding: 10px;
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .project-img:hover::after {
+        opacity: 1;
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 3rem;
+      }
+      .contact-card {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: black;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border: 1px solid #eee;
+        transition: 0.3s;
+      }
+      .contact-card:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        z-index: 2000;
+        display: none;
+        padding: 5% 8%;
+        overflow-y: auto;
+      }
+      .close-modal {
+        position: fixed;
+        top: 20px;
+        right: 40px;
+        font-size: 3rem;
+        cursor: pointer;
+        z-index: 2001;
+      }
+      .modal-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 40px;
+        margin-top: 40px;
+      }
+      .modal-text-content h2 {
+        margin: 35px 0 20px;
+        color: var(--primary);
+        font-size: 1.4rem;
+        border-bottom: 2px solid var(--accent);
+        display: inline-block;
+      }
+      .tech-box {
+        background: var(--accent);
+        padding: 25px;
+        border-radius: 15px;
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+      }
+      .tech-tag {
+        display: inline-block;
+        background: white;
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin: 4px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        border: 1px solid #ddd;
+      }
+      .step-item {
+        margin-bottom: 25px;
+        padding-left: 20px;
+        border-left: 4px solid var(--primary);
+      }
+      .step-item strong {
+        display: block;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+        color: #111;
+      }
+      .btn-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 40px;
+        background: #000;
+        color: white !important;
+        text-decoration: none;
+        font-weight: 800;
+        border-radius: 50px;
+        margin-top: 30px;
+        transition: 0.3s;
+      }
+      .btn-link:hover {
+        transform: scale(1.05);
+        background: var(--primary);
+      }
+
+      footer {
+        background: #000;
+        color: white;
+        padding: 40px 8%;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="particles-js"></div>
+    <div class="main-content">
+      <nav>
+        <div
+          class="logo"
+          style="
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--primary);
+          "
+        >
+          C.S
+        </div>
+        <div class="nav-links">
+          <a
+            href="#about"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: 600;
+              margin-left: 20px;
+            "
+            >À PROPOS</a
+          >
+          <a
+            href="#skills"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: 600;
+              margin-left: 20px;
+            "
+            >COMPÉTENCES</a
+          >
+          <a
+            href="#projects"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: 600;
+              margin-left: 20px;
+            "
+            >PROJETS</a
+          >
+          <a
+            href="#contact"
+            style="
+              text-decoration: none;
+              color: black;
+              font-weight: 600;
+              margin-left: 20px;
+            "
+            >CONTACT</a
+          >
+        </div>
+      </nav>
+
+      <section class="hero reveal">
+        <h1>Samy Chabour</h1>
+        <p style="font-size: 1.5rem; font-weight: 600; color: var(--primary)">
+          Data Analyst Student — HETIC Paris
+        </p>
+      </section>
+
+      <section id="about">
+        <div class="about-row reveal">
+          <div>
+            <h2 style="margin-bottom: 20px">À propos de moi</h2>
+            <p>
+              Actuellement en
+              <strong>Prépa Master Digitale à HETIC Paris</strong>, je me
+              spécialise dans le cycle complet de la donnée, de l'extraction à
+              la visualisation. Mon objectif est de transformer des flux bruts
+              en indicateurs stratégiques pour piloter les décisions en
+              entreprise.
+            </p>
+            <p style="margin-top: 15px">
+              Fort d'un parcours en
+              <strong>informatique appliquée à l'industrie</strong> (Master 1),
+              je combine une rigueur technique avec une vision analytique. Qu'il
+              s'agisse d'optimiser des stocks, d'analyser des parts de marché ou
+              de développer des algorithmes complexes, je mets mes expertises en
+              <strong>SQL, Python et Power BI</strong> au service de la
+              performance.
+            </p>
+          </div>
+          <div class="about-photo">
+            <img
+              src="Samy Chabour Pixel Art.png"
+              alt="Samy Chabour Pixel Art"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="skills">
+        <h2
+          class="reveal"
+          style="font-size: 2rem; font-weight: 800; margin-bottom: 2rem"
+        >
+          MES EXPERTISES
+        </h2>
+        <div class="skills-container">
+          <div class="skill-card reveal">
+            <img src="https://cdn.simpleicons.org/sqlite/003B57" /><span
+              >SQL / SQLITE</span
+            >
+          </div>
+          <div class="skill-card reveal">
+            <img src="https://cdn.simpleicons.org/python/3776AB" /><span
+              >PYTHON</span
+            >
+          </div>
+          <div class="skill-card reveal">
+            <img src="power bi.png" /><span>POWER BI</span>
+          </div>
+          <div class="skill-card reveal">
+            <img src="https://cdn.simpleicons.org/html5/E34F26" /><span
+              >HTML5</span
+            >
+          </div>
+          <div class="skill-card reveal">
+            <img src="css3-logo-png-transparent.png" /><span>CSS3</span>
+          </div>
+          <div class="skill-card reveal">
+            <img src="https://cdn.simpleicons.org/javascript/F7DF1E" /><span
+              >JAVASCRIPT</span
+            >
+          </div>
+          <div class="skill-card reveal">
+            <img src="exel.png" /><span>EXCEL VBA</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects">
+        <h2
+          class="reveal"
+          style="font-size: 2rem; font-weight: 800; margin-bottom: 4rem"
+        >
+          RÉALISATIONS DATA & DEV
+        </h2>
+
+        <div class="project-row reveal">
+          <div>
+            <span
+              style="color: var(--primary); font-weight: 800; font-size: 0.9rem"
+              >MACHINE LEARNING & API</span
+            >
+            <h3 style="font-size: 1.8rem; margin: 10px 0">GhostBot Pro</h3>
+            <p>
+              Pipeline de détection de textes générés par IA utilisant
+              Scikit-learn et une architecture API avec FastAPI.
+            </p>
+            <button
+              onclick="openM('GhostBot Pro')"
+              class="btn-link"
+              style="
+                padding: 12px 25px;
+                margin-top: 20px;
+                border: none;
+                cursor: pointer;
+              "
+            >
+              DÉCOUVRIR LE PROJET
+            </button>
+          </div>
+          <div
+            class="project-img"
+            onclick="openM('GhostBot Pro')"
+            style="background: #0a0a0a"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800"
+              alt="GhostBot Pro AI Detection"
+            />
+          </div>
+        </div>
+
+        <div class="project-row reveal">
+          <div>
+            <span
+              style="color: var(--primary); font-weight: 800; font-size: 0.9rem"
+              >PYTHON CASE STUDY</span
+            >
+            <h3 style="font-size: 1.8rem; margin: 10px 0">
+              Market Share Analysis : The Big Three
+            </h3>
+            <p>
+              Analyse stratégique de la domination mondiale des constructeurs de
+              consoles historiques.
+            </p>
+            <button
+              onclick="openM('Market Share Analysis : The Big Three')"
+              class="btn-link"
+              style="
+                padding: 12px 25px;
+                margin-top: 20px;
+                border: none;
+                cursor: pointer;
+              "
+            >
+              DÉCOUVRIR LE PROJET
+            </button>
+          </div>
+          <div
+            class="project-img"
+            onclick="openM('Market Share Analysis : The Big Three')"
+          >
+            <img src="The Big Three.jpg" alt="Market Analysis" />
+          </div>
+        </div>
+
+        <div class="project-row reveal">
+          <div>
+            <span
+              style="color: var(--primary); font-weight: 800; font-size: 0.9rem"
+              >SQL BUSINESS INTEL</span
+            >
+            <h3 style="font-size: 1.8rem; margin: 10px 0">
+              SQL Shop Analytics
+            </h3>
+            <p>
+              Traitement massif de données retail pour optimiser la stratégie de
+              stock et de vente.
+            </p>
+            <button
+              onclick="openM('SQL Shop Analytics')"
+              class="btn-link"
+              style="
+                padding: 12px 25px;
+                margin-top: 20px;
+                border: none;
+                cursor: pointer;
+              "
+            >
+              DÉCOUVRIR LE PROJET
+            </button>
+          </div>
+          <div
+            class="project-img"
+            onclick="openM('SQL Shop Analytics')"
+            style="background: #111"
+          >
+            <img src="SQL Shop Analytics.jpg" alt="SQL Analytics" />
+          </div>
+        </div>
+
+        <div class="project-row reveal">
+          <div>
+            <span
+              style="color: var(--primary); font-weight: 800; font-size: 0.9rem"
+              >GAME DEVELOPMENT</span
+            >
+            <h3 style="font-size: 1.8rem; margin: 10px 0">Island Game</h3>
+            <p>
+              Création d'un jeu vidéo complexe démontrant une maîtrise avancée
+              de la logique algorithmique en Python.
+            </p>
+            <button
+              onclick="openM('Island Game')"
+              class="btn-link"
+              style="
+                padding: 12px 25px;
+                margin-top: 20px;
+                border: none;
+                cursor: pointer;
+              "
+            >
+              DÉCOUVRIR LE PROJET
+            </button>
+          </div>
+          <div
+            class="project-img"
+            onclick="openM('Island Game')"
+            style="background: #222"
+          >
+            <img src="island game.jpg" alt="Island Game Preview" />
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2 class="reveal" style="font-size: 2rem; font-weight: 800">
+          ME CONTACTER
+        </h2>
+        <div class="contact-grid reveal">
+          <a href="mailto:chaboursamy16@gmail.com" class="contact-card">
+            <i class="fas fa-envelope" style="color: #ea4335"></i>
+            <div><strong>Email</strong><br />chaboursamy16@gmail.com</div>
+          </a>
+          <a
+            href="https://github.com/samychaby-oss"
+            target="_blank"
+            class="contact-card"
+          >
+            <i class="fab fa-github"></i>
+            <div><strong>GitHub</strong><br />samychaby-oss</div>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/chabour-samy-1031883a3/"
+            target="_blank"
+            class="contact-card"
+          >
+            <i class="fab fa-linkedin" style="color: #0077b5"></i>
+            <div><strong>LinkedIn</strong><br />Samy Chabour</div>
+          </a>
+          <a href="tel:0767092454" class="contact-card">
+            <i class="fas fa-phone" style="color: #34a853"></i>
+            <div><strong>Téléphone</strong><br />07 67 09 24 54</div>
+          </a>
+        </div>
+      </section>
+      <footer><p>SAMY CHABOUR — PORTFOLIO 2026</p></footer>
+    </div>
+
+    <div id="m" class="modal">
+      <span class="close-modal" onclick="closeM()">&times;</span>
+      <div class="modal-grid">
+        <div class="modal-text-content">
+          <h1 id="mT" style="font-size: 2.5rem; font-weight: 800"></h1>
+          <div id="mC"></div>
+        </div>
+        <div class="tech-box" id="mTech"></div>
+      </div>
+    </div>
+
+    <script>
+      particlesJS("particles-js", {
+        particles: {
+          number: { value: 60 },
+          color: { value: "#0052ff" },
+          opacity: { value: 0.2 },
+          size: { value: 2 },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#0052ff",
+            opacity: 0.1,
+          },
+          move: { enable: true, speed: 1.5 },
+        },
+      });
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Animation renforcée et plus visible
+      gsap.utils.toArray(".reveal").forEach((el) => {
+        gsap.to(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          opacity: 1,
+          y: -100, // Amplitude augmentée
+          duration: 1.2,
+          ease: "power2.out",
+        });
+      });
+
+      function openM(t) {
+        const title = document.getElementById("mT");
+        const content = document.getElementById("mC");
+        const techBox = document.getElementById("mTech");
+        title.innerText = t;
+
+        if (t === "GhostBot Pro") {
+          content.innerHTML = `
+            <h2><i class="fas fa-robot"></i> Détecteur d'IA Multiniveau</h2>
+            <p>Développement d'un système intelligent capable d'analyser des documents texte ligne par ligne pour identifier l'empreinte des modèles GPT.</p>
+            <div class="step-item"><strong>Entraîner (Machine Learning) :</strong> Utilisation de RandomForest et TF-IDF sur un dataset de 20 000 entrées.</div>
+            <div class="step-item"><strong>Déployer (FastAPI) :</strong> Création d'une API haute performance pour le traitement asynchrone des fichiers .txt.</div>
+            <div class="step-item"><strong>Structurer (SQLAlchemy) :</strong> Sauvegarde automatique des analyses détaillées dans une base PostgreSQL.</div>
+            <div class="step-item"><strong>Nettoyer (Pandas) :</strong> Mise en place d'un pipeline de nettoyage robuste pour traiter les données corrompues.</div>
+            <a href="https://github.com/samychaby-oss/ghostbot-ai-detector" target="_blank" class="btn-link"><i class="fab fa-github"></i> VOIR SUR GITHUB</a>
+          `;
+          techBox.innerHTML = `<h3>Technologies</h3><span class="tech-tag">Python</span><span class="tech-tag">Scikit-Learn</span><span class="tech-tag">FastAPI</span><span class="tech-tag">PostgreSQL</span><span class="tech-tag">Uvicorn</span>`;
+        } else if (t === "Island Game") {
+          content.innerHTML = `
+            <h2><i class="fas fa-bullseye"></i> Objectif du Projet</h2>
+            <p>Conception d'une expérience interactive riche. Ce projet met en avant la gestion de systèmes complexes et la programmation orientée objet.</p>
+            <div class="step-item"><strong>Développer (Python) :</strong> Écriture de la logique de jeu complète...</div>
+            <div class="step-item"><strong>Structurer (Listes/Dict) :</strong> Organisation rigoureuse des variables...</div>
+            <div class="step-item"><strong>Coordonner (Pair-programming) :</strong> Collaboration active sur le code...</div>
+            <div class="step-item"><strong>Déboguer (Scripts) :</strong> Analyse systématique et résolution des erreurs...</div>
+            <div class="step-item"><strong>Concevoir (Interface) :</strong> Développement du gameplay et de l'interface...</div>
+            <a href="https://github.com/samychaby-oss/Island-Game" target="_blank" class="btn-link"><i class="fab fa-github"></i> INSTALLER SUR GITHUB</a>
+          `;
+          techBox.innerHTML = `<h3>Technologies</h3><span class="tech-tag">Python 3</span><span class="tech-tag">Algorithmique</span><span class="tech-tag">Data Structures</span><span class="tech-tag">Pair Programming</span>`;
+        } else if (t === "SQL Shop Analytics") {
+          content.innerHTML = `
+            <h2><i class="fas fa-bullseye"></i> Mission Business Intelligence</h2>
+            <p>Analyse de 500k+ transactions pour extraire des insights exploitables par une équipe marketing/Vente.</p>
+            <div class="step-item"><strong>Extraire (SQL) :</strong> Migration et centralisation de l'historique...</div>
+            <div class="step-item"><strong>Nettoyer (Fonctions) :</strong> Utilisation des fonctions SQL...</div>
+            <div class="step-item"><strong>Calculer (KPIs) :</strong> Développement de requêtes pour extraire le CA...</div>
+            <div class="step-item"><strong>Optimiser (Requêtes) :</strong> Mise en œuvre de CTE...</div>
+            <div class="step-item"><strong>Identifier (Analytics) :</strong> Identification automatique des "Best-sellers"...</div>
+            <a href="https://colab.research.google.com/drive/10lnHX3F6R81wLLlALHsLh9szOunaS4_h" target="_blank" class="btn-link"><i class="fab fa-python"></i> VOIR LE NOTEBOOK SQL</a>
+          `;
+          techBox.innerHTML = `<h3>Technologies</h3><span class="tech-tag">SQL (SQLite)</span><span class="tech-tag">Data Cleaning</span><span class="tech-tag">CTE</span><span class="tech-tag">Business KPIs</span>`;
+        } else {
+          content.innerHTML = `
+            <h2><i class="fas fa-bullseye"></i> Étude de Marché</h2>
+            <p>Analyse de la pénétration de marché mondiale des constructeurs Sony, Nintendo et Microsoft via Python.</p>
+            <div class="step-item"><strong>Collecte :</strong> Importation et fusion des datasets...</div>
+            <div class="step-item"><strong>Ingénierie :</strong> Mapping des consoles par constructeurs...</div>
+            <div class="step-item"><strong>Visualisation :</strong> Création de graphiques dynamiques via Seaborn...</div>
+            <a href="https://colab.research.google.com/drive/1OFEDDsZsIYcLmiP7uYYUNxh9dDNAnXAT" target="_blank" class="btn-link"><i class="fab fa-python"></i> VOIR LE NOTEBOOK PYTHON</a>
+          `;
+          techBox.innerHTML = `<h3>Technologies</h3><span class="tech-tag">Python</span><span class="tech-tag">Pandas</span><span class="tech-tag">Seaborn</span><span class="tech-tag">Matplotlib</span>`;
+        }
+        document.getElementById("m").style.display = "block";
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeM() {
+        document.getElementById("m").style.display = "none";
+        document.body.style.overflow = "auto";
+      }
+    </script>
+  </body>
+</html>
